@@ -2,7 +2,7 @@ from telebot import *
 from telebot.types import *
 from time import sleep, time
 import sqlite3, requests, os
-tkn = ("6336002264:AAE94LzaU0rOcyIUCzp4liCC8HhTMwmh8ZI")
+tkn = ("6707171521:AAExFoeQEI2K4bc3IKZnX_JmCCBhdE350OQ")
 my_id = 6264668799 #id you
 bot = TeleBot(tkn)
 db = sqlite3.connect("Media.db", check_same_thread=False)
