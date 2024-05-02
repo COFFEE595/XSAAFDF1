@@ -1,28 +1,40 @@
-import telebot
-import requests
+import requests , telebot
 from telebot import types
 
-token = "7069552302:AAHSdIuEa0sD0QLZ5IfumNnWPv5hxTXp_Qg"#token
-bot = telebot.TeleBot(token)
-channel= types.InlineKeyboardButton(text='قناتي', url = "https://t.me/SuPeRx1")
+bot = "7069552302:AAHSdIuEa0sD0QLZ5IfumNnWPv5hxTXp_Qg"
+bot = telebot.TeleBot(bot)
+
+sh_btn = types.InlineKeyboardButton(text='تحميل', callback_data='s1')
+
 @bot.message_handler(commands=["start"])
 def start(message):
-	b = types.InlineKeyboardMarkup()
-	b.add(channel)
-	bot.reply_to(message,'اهلن بك في بوت تحميل صوت فيديو اليويتوب\n- ارسل الرابط Now\n[by](t.me/BRoK8)',disable_web_page_preview="true",parse_mode="markdown",reply_markup=b)
+    
+    b = types.InlineKeyboardMarkup()
+    b.row_width = 2
+    b.add(sh_btn)
+    
+    bot.send_message(message.chat.id,f"""
+    *مرحبا بك {message.from_user.first_name} في بوت تحميل من تيك توك يحمل فيديو وصوت 💿*""",parse_mode='markdown',reply_markup=b)
 
-@bot.message_handler(func=lambda m:True)
-def Url(message):
-	try:
-		msg = message.text
-		req = requests.get(f'https://el-sherif.shop/Mahmoud/api/down.php?url={msg}').json()
-		ti = req['title']
-		im = req['img']
-		u = req['url']
-		tii = req['duration']
-		bot.send_photo(message.chat.id,im, caption=f"{tii}")
-		bot.send_voice(message.chat.id,u, caption=f"{ti}")
-	except:bot.reply_to(message,'error')
-	pass
+@bot.callback_query_handler(func=lambda call: True)
+def sh(call):
+  if call.data=='s1':
+   bot.send_message(call.message.chat.id,'- ارسل الرابط!')
+   @bot.message_handler(func=lambda m: True)
+   def Url(message):
+    bot.send_message(message.chat.id,"<strong>جاري التحميل انتظر قليلا ...</strong>",parse_mode="html")
+    msg = message.text
+    try:
+     url = requests.get(f'https://dev-broksuper.pantheonsite.io/api/e/mp3.php?url={msg}').json()
+     a = url["video"]["videoURL"]
+     b = url['audioURL']
+     
+     bot.send_video(message.chat.id,a,caption='تم تحميل بواسطة @SuPeRx1')
+     bot.send_voice(message.chat.id,b,caption='تم تحميل بواسطة @SuPeRx1')
+    
+    
+    except:
+     bot.send_message(message.chat.id,"تأكد من الرابط..!")
+  
 print('run')
 bot.infinity_polling()
