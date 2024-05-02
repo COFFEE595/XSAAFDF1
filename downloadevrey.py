@@ -1,40 +1,27 @@
-import requests , telebot
-from telebot import types
+import requests
 
-bot = "7069552302:AAHSdIuEa0sD0QLZ5IfumNnWPv5hxTXp_Qg"
-bot = telebot.TeleBot(bot)
+def get(url):
+    response = requests.get(url)
+    return response.json()
 
-sh_btn = types.InlineKeyboardButton(text='تحميل', callback_data='s1')
+def handle_message(text, chat_id):
+    if text:
+        api_data = get("https://hmsbots.aba.vg/api/Pintrest.php?url=" + text)
+        if "UrlVideo" in api_data:
+            bot.send_video(chat_id, api_data["UrlVideo"])
+        elif "UrlPhoto" in api_data:
+            bot.send_photo(chat_id, api_data["UrlPhoto"])
 
-@bot.message_handler(commands=["start"])
-def start(message):
-    
-    b = types.InlineKeyboardMarkup()
-    b.row_width = 2
-    b.add(sh_btn)
-    
-    bot.send_message(message.chat.id,f"""
-    *مرحبا بك {message.from_user.first_name} في بوت تحميل من تيك توك يحمل فيديو وصوت 💿*""",parse_mode='markdown',reply_markup=b)
+# يفترض أنك قد قمت بتهيئة كائن البوت بالفعل
+# يمكنك استخدام الكائن الموجود في السياق الخاص بك
+# والذي يبدو من رمز البوت الذي قمت بمشاركته في الكود الأول
+# قمت بتغيير اسم الكائن في الشفرة الأساسية من "bot" إلى "bot_instance" لتوضيح الأمر
+# ولكن قم بتغييره إلى اسم الكائن الفعلي للبوت الخاص بك
+bot_instance = telebot.TeleBot("7069552302:AAHSdIuEa0sD0QLZ5IfumNnWPv5hxTXp_Qg")
 
-@bot.callback_query_handler(func=lambda call: True)
-def sh(call):
-  if call.data=='s1':
-   bot.send_message(call.message.chat.id,'- ارسل الرابط!')
-   @bot.message_handler(func=lambda m: True)
-   def Url(message):
-    bot.send_message(message.chat.id,"<strong>جاري التحميل انتظر قليلا ...</strong>",parse_mode="html")
-    msg = message.text
-    try:
-     url = requests.get(f'https://dev-broksuper.pantheonsite.io/api/e/mp3.php?url={msg}').json()
-     a = url["video"]["videoURL"]
-     b = url['audioURL']
-     
-     bot.send_video(message.chat.id,a,caption='تم تحميل بواسطة @SuPeRx1')
-     bot.send_voice(message.chat.id,b,caption='تم تحميل بواسطة @SuPeRx1')
-    
-    
-    except:
-     bot.send_message(message.chat.id,"تأكد من الرابط..!")
-  
-print('run')
-bot.infinity_polling()
+@bot_instance.message_handler(func=lambda message: True)
+def handle_message(message):
+    handle_message(message.text, message.chat.id)
+
+# بدء الاستماع للرسائل
+bot_instance.polling()
