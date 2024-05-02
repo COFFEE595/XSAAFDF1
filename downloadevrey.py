@@ -2,7 +2,7 @@ import telebot
 import requests
 from telebot import types
 
-token = "6707171521:AAExFoeQEI2K4bc3IKZnX_JmCCBhdE350OQ"#token
+token = "7069552302:AAHSdIuEa0sD0QLZ5IfumNnWPv5hxTXp_Qg"#token
 bot = telebot.TeleBot(token)
 channel= types.InlineKeyboardButton(text='قناتي', url = "https://t.me/SuPeRx1")
 @bot.message_handler(commands=["start"])
