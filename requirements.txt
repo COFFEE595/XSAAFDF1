@@ -1,3 +1,5 @@
-requests
-pyTelegramBotAPI
+random 
 telebot
+types
+os 
+YouTube
