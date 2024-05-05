@@ -29,7 +29,7 @@ except ImportError:
 
 os.system('clear')
 
-token = input("5872831544:AAFLrtuOSBtCKMb6Teno1wguBBeLLau9Yas")
+token = input("6715582424:AAEOQHeZi5RzsobRCFW4Jx7d3-T_bank2bo")
 
 chatid = ''
 
